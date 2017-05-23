@@ -1,0 +1,30 @@
+<div class="jumbotron">
+    <h1 class="text-center">Welcome to Kotaknews!</h1>
+    <h3 class="text-center">News Scraper from Kotaku!</h3>
+    {{!--<button class="btn btn-lg btn-warning text-center" id="scrapBtn">Scrape Articles Now!</button>--}}
+</div>
+
+<div class="container-fluid" id="subDiv">
+    <h3 class="text-center">ALL THE LATEST NEWS FROM KOTAKU</h3>
+</div>
+
+<div class="container-fluid col-xs-12">
+<div class="container col-xs-2">
+
+</div>
+
+<div id="main" class="container col-xs-6">
+    <div class="container col-xs-12">
+        {{#each articles}}
+        <div class="article" data-id="{{this._id}}">
+            <h2>{{this.title}}</h2>
+            <a href="{{this.link}}" target="_blank">{{this.link}}</a>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<div id="commentSpan" class="container col-xs-4">
+
+</div>
+</div>
