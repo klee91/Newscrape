@@ -1,16 +1,10 @@
 var commentId;
-// Whenever someone clicks a p tag
-$(document).on("click", ".article", function() {
-  // Empty the notes from the note section
-  $("#commentSpan").empty();
-  // Save the id from the p tag
-  var thisId = $(this).attr("data-id");
 
+var getComments = function(thisId) {
   $.ajax({
     method: "GET",
     url: "/articles/" + thisId
-  })
-    .done(function(data) {
+  }).done(function(data) {
       console.log(JSON.stringify(data));
 
       // The title of the article
@@ -37,12 +31,21 @@ $(document).on("click", ".article", function() {
             div.appendTo('#commentSpan');
         }
       }
-
       // A textarea to add a new note body
       $("#commentSpan").append("<textarea id='commentInput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
       $("#commentSpan").append("<button data-id='" + data[0]._id + "' id='postComment'>Post Comment</button>");
-    });
+  })
+};
+
+// Whenever someone clicks a p tag
+$(document).on("click", ".article", function() {
+  // Empty the notes from the note section
+  $("#commentSpan").empty();
+  // Save the id from the p tag
+  var thisId = $(this).attr("data-id");
+
+  getComments(thisId);
 });
 
 // When you click the postcomment button
@@ -50,7 +53,7 @@ $(document).on("click", "#postComment", function(e) {
   e.preventDefault();
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
-
+  
   // Run a POST request to post comment, using what's entered in the inputs
   $.ajax({
     method: "POST",
@@ -64,17 +67,17 @@ $(document).on("click", "#postComment", function(e) {
     .done(function(data) {
       // Log the response
       console.log(data);
-      // Empty the notes section
       $("#commentSpan").empty();
+      getComments(thisId);
     });
 
   $("#commentInput").val("");
 });
 
+//comment X button event
 $(document).on("click", ".closeX", function(e) {
   e.preventDefault();
   commentId = $(this).attr('data-id');
-
   console.log(commentId);
 });
 

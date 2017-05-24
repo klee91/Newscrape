@@ -29,14 +29,14 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // Make public a static dir
-app.use(express.static("./public"));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // Database configuration with mongoose
 //heroku link: mongodb://heroku_6g70dlvh:Kevlee91@ds147681.mlab.com:47681/heroku_6g70dlvh
 mongoose.connect("mongodb://localhost/newscraper");
 var db = mongoose.connection;
 
-// Show any mongoose errors
+// Show any Mongoose errors
 db.on("error", function(error) {
   console.log("Mongoose Error: ", error);
 });
@@ -64,7 +64,7 @@ app.get("/", function(req, res) {
       result.link = $(this).children("a").attr("href");
       var entry = new Article(result);
 
-      // Now, save that entry to the db
+      //save entry to DB
       entry.save(function(err, doc) {
         if (err) {
           console.log(err);
@@ -76,6 +76,7 @@ app.get("/", function(req, res) {
 
     });
   });
+    //will find, and limit to 25 articles
     Article.find({}).limit(25).exec( function(error, doc) {
         if (error) {
             console.log(error);
@@ -90,28 +91,23 @@ app.get("/", function(req, res) {
 
 // This will get the articles we scraped from the mongoDB
 app.get("/articles", function(req, res) {
-  // Grab every doc in the Articles array
   Article.find({}, function(error, doc) {
-    // Log any errors
     if (error) {
       console.log(error);
     }
-    // Or send the doc to the browser as a json object
     else {
       res.json(doc);
     }
   });
 });
 
-// Grab an article by it's ObjectId
+// Grab an article by it's id
 app.get("/articles/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  //Query for article by ID
   Article.find({ "_id": req.params.id })
-  // ..and populate all of the notes associated with it
+  // ..and populate all of the comments associated with it
   .populate("comments")
-  // now, execute our query
   .exec(function(error, doc) {
-    // Log any errors
     if (error) {
       console.log(error);
     }
@@ -130,22 +126,17 @@ app.post("/articles/:id", function(req, res) {
 
   // And save the new comment to the db
   newComment.save(function(error, doc) {
-    // Log any errors
     if (error) {
       console.log(error);
     }
-    // Otherwise
     else {
       // Use the article id to find and update it's comment
       Article.findOneAndUpdate({"_id": req.params.id }, { $push: { "comments": doc._id }} , {new: true})
-      // Execute the above query
       .exec(function(err, doc) {
-        // Log any errors
         if (err) {
           console.log(err);
         }
         else {
-          // Or send the document to the browser
           res.send(doc);
         }
       });
