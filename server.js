@@ -52,9 +52,9 @@ db.once("open", function() {
 
 // Routes
 // ======
-app.get("/", function(req, res) {
-    var hbsObject;
-    
+
+//get scraped data
+app.get("/scraped", function(req,res) {
   request("http://www.kotaku.com/", function(error, response, html) {
     var $ = cheerio.load(html);
 
@@ -80,6 +80,11 @@ app.get("/", function(req, res) {
 
     });
   });
+});
+
+app.get("/", function(req, res) {
+    var hbsObject;
+
     //will find, and limit to 25 articles
     Article.find({}).limit(25).exec( function(error, doc) {
         if (error) {

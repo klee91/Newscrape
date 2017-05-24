@@ -5,8 +5,6 @@ var getComments = function(thisId) {
     method: "GET",
     url: "/articles/" + thisId
   }).done(function(data) {
-      console.log(JSON.stringify(data));
-
       // The title of the article
       $("#commentSpan").append("<h2>" + data[0].title + "</h2>");
       
@@ -18,10 +16,6 @@ var getComments = function(thisId) {
             var closeSpan = $('<span>')
             // var name = $('<h4>');
             var p = $('<p>');
-            //----------------------------------------------------------------------------------------------------
-            //fill out----------------------------------------------------------------------------------------------------
-            //----------------------------------------------------------------------------------------------------
-            // name.html()
             p.html(data[0].comments[i].body).appendTo(div);
 
             closeSpan.attr('data-id', data[0].comments[i]._id).attr('data-toggle',"modal").attr('data-target', "#deleteModal")
@@ -38,13 +32,23 @@ var getComments = function(thisId) {
   })
 };
 
-// Whenever someone clicks a p tag
-$(document).on("click", ".article", function() {
-  // Empty the notes from the note section
-  $("#commentSpan").empty();
-  // Save the id from the p tag
-  var thisId = $(this).attr("data-id");
+$(document).on('click', '#scrapeBtn', function(e) {
+  e.preventDefault();
 
+  $.ajax({
+    method: "GET",
+    url: "/scraped"
+  }).done(function(data) {
+    console.log(data);
+    location.reload();
+  })
+})
+
+// Whenever someone clicks an article
+$(document).on("click", ".article", function() {
+  $("#commentSpan").empty();
+  var thisId = $(this).attr("data-id");
+  //get comments for this article id
   getComments(thisId);
 });
 
