@@ -1,4 +1,4 @@
-
+var commentId;
 // Whenever someone clicks a p tag
 $(document).on("click", ".article", function() {
   // Empty the notes from the note section
@@ -20,6 +20,8 @@ $(document).on("click", ".article", function() {
       if (data[0].comments) {
         for (var i = 0; i < data[0].comments.length; i++) {
             var div = $('<div class="comment">');
+            var close = $('<div>');
+            var closeSpan = $('<span>')
             // var name = $('<h4>');
             var p = $('<p>');
             //----------------------------------------------------------------------------------------------------
@@ -27,6 +29,11 @@ $(document).on("click", ".article", function() {
             //----------------------------------------------------------------------------------------------------
             // name.html()
             p.html(data[0].comments[i].body).appendTo(div);
+
+            closeSpan.attr('data-id', data[0].comments[i]._id).attr('data-toggle',"modal").attr('data-target', "#deleteModal")
+            .addClass('closeX glyphicon glyphicon-remove').appendTo(close);
+            close.addClass('close').appendTo(div);
+
             div.appendTo('#commentSpan');
         }
       }
@@ -39,11 +46,12 @@ $(document).on("click", ".article", function() {
 });
 
 // When you click the postcomment button
-$(document).on("click", "#postComment", function() {
+$(document).on("click", "#postComment", function(e) {
+  e.preventDefault();
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
-  // Run a POST request to change the note, using what's entered in the inputs
+  // Run a POST request to post comment, using what's entered in the inputs
   $.ajax({
     method: "POST",
     url: "/articles/" + thisId,
@@ -62,3 +70,26 @@ $(document).on("click", "#postComment", function() {
 
   $("#commentInput").val("");
 });
+
+$(document).on("click", ".closeX", function(e) {
+  e.preventDefault();
+  commentId = $(this).attr('data-id');
+
+  console.log(commentId);
+});
+
+$(document).on('click', "#deleteConfirm", function(e) {
+  e.preventDefault();
+  console.log("confirm loc: " + commentId);
+  $.ajax({
+    method: "DELETE",
+    url: "/articles/" + commentId
+  })
+    // With that done
+    .done(function(data) {
+      // Log the response
+      console.log(data);
+      // Empty the notes section
+      $("#commentSpan").empty();
+    });
+})

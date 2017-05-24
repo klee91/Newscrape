@@ -154,10 +154,10 @@ app.post("/articles/:id", function(req, res) {
 });
 
 //delete comment route
-app.post("/articles/:id", function(req,res) {
+app.delete("/articles/:id", function(req,res) {
     Comment.remove({"_id" : req.params.id}, function(err, doc) {
-        if (error) {
-          console.log(error)
+        if (err) {
+          console.log(err)
         } else {
           res.send(doc);
         }
