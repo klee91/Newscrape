@@ -32,8 +32,12 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // Database configuration with mongoose
-//heroku link: mongodb://heroku_6g70dlvh:Kevlee91@ds147681.mlab.com:47681/heroku_6g70dlvh
-mongoose.connect("mongodb://localhost/newscraper");
+// if (process.env.mongodb://heroku_6g70dlvh:u9q4bgi9vsir8fvan5dui1s7ck@ds147681.mlab.com:47681/heroku_6g70dlvh) {
+//   mongoose.connect('mongodb://heroku_6g70dlvh:u9q4bgi9vsir8fvan5dui1s7ck@ds147681.mlab.com:47681/heroku_6g70dlvh');
+// } else {
+//   mongoose.connect("mongodb://localhost/newscraper");
+// }
+mongoose.connect('mongodb://heroku_6g70dlvh:u9q4bgi9vsir8fvan5dui1s7ck@ds147681.mlab.com:47681/heroku_6g70dlvh');
 var db = mongoose.connection;
 
 // Show any Mongoose errors
@@ -50,7 +54,7 @@ db.once("open", function() {
 // ======
 app.get("/", function(req, res) {
     var hbsObject;
-
+    
   request("http://www.kotaku.com/", function(error, response, html) {
     var $ = cheerio.load(html);
 

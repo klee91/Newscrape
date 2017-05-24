@@ -78,12 +78,10 @@ $(document).on("click", "#postComment", function(e) {
 $(document).on("click", ".closeX", function(e) {
   e.preventDefault();
   commentId = $(this).attr('data-id');
-  console.log(commentId);
 });
 
 $(document).on('click', "#deleteConfirm", function(e) {
   e.preventDefault();
-  console.log("confirm loc: " + commentId);
   $.ajax({
     method: "DELETE",
     url: "/articles/" + commentId
