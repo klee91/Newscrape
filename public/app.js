@@ -32,15 +32,14 @@ var getComments = function(thisId) {
   })
 };
 
-$(document).on('click', '#scrapeBtn', function(e) {
+$(document).on('click', '#showBtn', function(e) {
   e.preventDefault();
-
+  $('#main').css('visibility', 'visible');
   $.ajax({
     method: "GET",
-    url: "/scraped"
+    url: "/articles"
   }).done(function(data) {
     console.log(data);
-    location.reload();
   })
 })
 

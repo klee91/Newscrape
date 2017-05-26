@@ -37,7 +37,9 @@ app.use(express.static(path.join(__dirname, '/public')));
 // } else {
 //   mongoose.connect("mongodb://localhost/newscraper");
 // }
+
 mongoose.connect('mongodb://heroku_6g70dlvh:u9q4bgi9vsir8fvan5dui1s7ck@ds147681.mlab.com:47681/heroku_6g70dlvh');
+// mongoose.connect("mongodb://localhost/newscraper");
 var db = mongoose.connection;
 
 // Show any Mongoose errors
@@ -53,9 +55,10 @@ db.once("open", function() {
 // Routes
 // ======
 
-//get scraped data
-app.get("/scraped", function(req,res) {
-  request("http://www.kotaku.com/", function(error, response, html) {
+//scrape upon entering home page
+app.get("/", function(req, res) {
+    var hbsObject;
+    request("http://www.kotaku.com/", function(error, response, html) {
     var $ = cheerio.load(html);
 
     $("h1.headline.entry-title").each(function(i, element) {
@@ -80,10 +83,6 @@ app.get("/scraped", function(req,res) {
 
     });
   });
-});
-
-app.get("/", function(req, res) {
-    var hbsObject;
 
     //will find, and limit to 25 articles
     Article.find({}).limit(25).exec( function(error, doc) {

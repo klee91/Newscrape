@@ -29,26 +29,6 @@
 	font-style: normal;
 }
 
-/* Ostrich Sans Dashed */
-
-@font-face {
-	font-family: 'Ostrich Sans Dashed';
-	src: url('/assets/fonts/ostrich-sans-dashed.eot');
-	src: url('/assets/fonts/ostrich-sans-dashed.woff') format('woff'), url('/assets/fonts/ostrich-sans-dashed.ttf') format('truetype'), url('/assets/fonts/ostrich-sans-dashed.svg') format('svg');
-	font-weight: 500;
-	font-style: normal;
-}
-
-/* Ostrich Sans Rounded */
-
-@font-face {
-	font-family: 'Ostrich Sans Rounded';
-	src: url('/assets/fonts/ostrich-sans-rounded.eot');
-	src: url('/assets/fonts/ostrich-sans-rounded.woff') format('woff'), url('/assets/fonts/ostrich-sans-rounded.ttf') format('truetype'), url('/assets/fonts/ostrich-sans-rounded.svg') format('svg');
-	font-weight: 500;
-	font-style: normal;
-}
-
 /* Ostrich Sans Inline */
 
 @font-face {
@@ -113,4 +93,9 @@ body {
     overflow-y:scroll;
     height: 500px;
     margin-bottom: 5%;
+	visibility: hidden;
+}
+#showBtn {
+	display:block;
+	margin: 0 auto;
 }
