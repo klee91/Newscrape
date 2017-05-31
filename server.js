@@ -4,6 +4,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
 var mongoose = require("mongoose");
+var port = process.env.PORT || 3000;
 
 var app = express();
 var exphbs = require("express-handlebars");
@@ -164,6 +165,6 @@ app.delete("/articles/:id", function(req,res) {
 })
 
 // Listen on port 3000
-app.listen(3000, function() {
-  console.log("App running on port 3000!");
+app.listen(port, function() {
+  console.log("App running on port " + port);
 });
